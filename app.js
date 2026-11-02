@@ -71,7 +71,7 @@
     renderList(); renderPreview();
     el.count.textContent = items.length;
     el.clear.disabled = el.gen.disabled = !items.length;
-    el.hint.textContent = items.length ? 'Drag thumbnails to change the page order.' : 'No images yet. Drag the thumbnails to change page order.';
+    el.hint.textContent = items.length ? 'Drag thumbnails to change the page order.' : 'No images yet.';
   }
   function renderList() {
     el.list.innerHTML = '';
