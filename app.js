@@ -1,13 +1,12 @@
 (() => {
   'use strict';
-  // ---- Fixed print settings (millimeters) ----
   const PAGE_W = 297, PAGE_H = 210, MARGIN = 10;
-  const MID = PAGE_W / 2;                         // 148.5 = fold line
-  const AREA_W = MID - MARGIN, AREA_H = PAGE_H - 2 * MARGIN; // 138.5 x 190 per half
-  const MAX_PX = 4500;                            // cap very large images
+  const MID = PAGE_W / 2;                    
+  const AREA_W = MID - MARGIN, AREA_H = PAGE_H - 2 * MARGIN; 
+  const MAX_PX = 4500;                          
   const $ = id => document.getElementById(id);
 
-  const items = [];          // {id,name,url,w,h,data}
+  const items = [];          
   let page = 0, pdfBlob = null, pdfUrl = null, uid = 0, pasteN = 0;
 
   const el = {
@@ -18,7 +17,6 @@
     gen: $('generateBtn'), dl: $('downloadBtn'), status: $('status')
   };
 
-  // ---- Layout: fit image inside each half, centered, aspect ratio kept ----
   function layout(w, h) {
     const s = Math.min(AREA_W / w, AREA_H / h);
     const dw = w * s, dh = h * s;
@@ -26,14 +24,12 @@
     return { dw, dh, y, xL: MARGIN + (AREA_W - dw) / 2, xR: MID + (AREA_W - dw) / 2 };
   }
 
-  // ---- Messages ----
   let errTimer;
   function showError(msg) {
     el.err.textContent = msg; el.err.hidden = false;
     clearTimeout(errTimer); errTimer = setTimeout(() => el.err.hidden = true, 7000);
   }
 
-  // ---- Adding images ----
   function loadImage(url) {
     return new Promise((res, rej) => {
       const img = new Image();
@@ -70,7 +66,6 @@
     items.forEach(x => URL.revokeObjectURL(x.url)); items.length = 0; page = 0; changed();
   }
 
-  // ---- UI refresh ----
   function changed() {
     invalidatePdf();
     renderList(); renderPreview();
@@ -114,7 +109,6 @@
     el.prev.disabled = page === 0; el.next.disabled = page >= items.length - 1;
   }
 
-  // ---- PDF ----
   function toJpegData(it) {
     if (it.data) return it.data;
     const s = Math.min(1, MAX_PX / Math.max(it.w, it.h));
@@ -165,7 +159,6 @@
     document.body.appendChild(a); a.click(); a.remove();
   }
 
-  // ---- Events ----
   el.browse.onclick = e => { e.stopPropagation(); el.input.click(); };
   el.dz.onclick = () => el.input.click();
   el.dz.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.input.click(); } };
@@ -173,7 +166,6 @@
   ['dragenter', 'dragover'].forEach(t => el.dz.addEventListener(t, e => { e.preventDefault(); el.dz.classList.add('drag'); }));
   ['dragleave', 'drop'].forEach(t => el.dz.addEventListener(t, e => { e.preventDefault(); el.dz.classList.remove('drag'); }));
   el.dz.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
-  // Stop the browser from opening files dropped outside the dropzone
   ['dragover', 'drop'].forEach(t => window.addEventListener(t, e => e.preventDefault()));
   document.addEventListener('paste', e => {
     const files = [...(e.clipboardData?.items || [])].filter(i => i.kind === 'file' && i.type.startsWith('image/')).map(i => i.getAsFile()).filter(Boolean);
