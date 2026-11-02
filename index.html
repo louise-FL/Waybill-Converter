@@ -10,7 +10,6 @@
 <body>
 <header class="header">
   <h1>Waybill PDF Formatter</h1>
-  <p>Upload, arrange, and convert your waybills into print-ready PDFs.</p>
 </header>
 
 <main class="wrap">
@@ -30,15 +29,15 @@
       <h2>Images <span id="count" class="badge">0</span></h2>
       <button class="btn ghost" id="clearBtn" disabled>Clear All</button>
     </div>
-    <p class="hint" id="listHint">No images yet. Drag the thumbnails to change page order.</p>
+    <p class="hint" id="listHint">No images yet.</p>
     <ul id="list" class="list"></ul>
   </section>
 
   <section class="card">
     <h2>PDF settings</h2>
     <div class="settings">
-      <div><span>Paper</span><strong>A4 Landscape (297 × 210 mm)</strong></div>
-      <div><span>Margins</span><strong>10 mm on all sides</strong></div>
+      <div><span>Paper</span><strong>A4 Landscape</strong></div>
+      <div><span>Margins</span><strong>1 cm on all sides</strong></div>
       <div><span>Layout</span><strong>Two identical copies per page</strong></div>
       <div><span>Duplicate images</span><strong>Enabled</strong></div>
     </div>
@@ -49,14 +48,14 @@
   <section class="card">
     <h2>Preview</h2>
     <div class="paper-wrap">
-      <div id="paper" class="paper"><div class="empty">Add an image to see the preview</div></div>
+      <div id="paper" class="paper"><div class="empty">Add an image to see preview</div></div>
     </div>
     <div class="row center nav">
       <button class="btn" id="prevBtn" aria-label="Previous page" disabled>&larr; Prev</button>
       <span id="pageInfo">Page 0 of 0</span>
       <button class="btn" id="nextBtn" aria-label="Next page" disabled>Next &rarr;</button>
     </div>
-    <p class="hint center">Dashed blue line = 10 mm margin. Print the PDF at 100% / Actual Size.</p>
+    <p class="hint center">Print the PDF at 100% / Actual Size.</p>
   </section>
 
   <section class="card actions">
@@ -66,7 +65,7 @@
   </section>
 </main>
 
-<footer class="footer">Everything runs in your browser. Your images are never uploaded.</footer>
+<footer class="footer">Katamaran Pro Max.</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
