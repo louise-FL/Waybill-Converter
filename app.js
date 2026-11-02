@@ -2,11 +2,11 @@
   'use strict';
   const PAGE_W = 297, PAGE_H = 210, MARGIN = 10;
   const MID = PAGE_W / 2;                    
-  const AREA_W = MID - MARGIN, AREA_H = PAGE_H - 2 * MARGIN; 
-  const MAX_PX = 4500;                          
+  const AREA_W = MID - 2 * MARGIN, AREA_H = PAGE_H - 2 * MARGIN; 
+  const MAX_PX = 4500;                  
   const $ = id => document.getElementById(id);
 
-  const items = [];          
+  const items = [];          // {id,name,url,w,h,data}
   let page = 0, pdfBlob = null, pdfUrl = null, uid = 0, pasteN = 0;
 
   const el = {
@@ -21,9 +21,10 @@
     const s = Math.min(AREA_W / w, AREA_H / h);
     const dw = w * s, dh = h * s;
     const y = MARGIN + (AREA_H - dh) / 2;
-    return { dw, dh, y, xL: MARGIN + (AREA_W - dw) / 2, xR: MID + (AREA_W - dw) / 2 };
+    return { dw, dh, y, xL: MARGIN + (AREA_W - dw) / 2, xR: MID + MARGIN + (AREA_W - dw) / 2 };
   }
 
+  // ---- Messages ----
   let errTimer;
   function showError(msg) {
     el.err.textContent = msg; el.err.hidden = false;
@@ -94,9 +95,11 @@
       el.info.textContent = 'Page 0 of 0'; el.prev.disabled = el.next.disabled = true; return;
     }
     const it = items[page], L = layout(it.w, it.h);
-    const m = document.createElement('div'); m.className = 'margin';
-    Object.assign(m.style, { left: pct(MARGIN, PAGE_W), top: pct(MARGIN, PAGE_H), width: pct(PAGE_W - 2 * MARGIN, PAGE_W), height: pct(PAGE_H - 2 * MARGIN, PAGE_H) });
-    p.appendChild(m);
+    [MARGIN, MID + MARGIN].forEach(x0 => {
+      const m = document.createElement('div'); m.className = 'margin';
+      Object.assign(m.style, { left: pct(x0, PAGE_W), top: pct(MARGIN, PAGE_H), width: pct(AREA_W, PAGE_W), height: pct(AREA_H, PAGE_H) });
+      p.appendChild(m);
+    });
     [L.xL, L.xR].forEach(x => {
       const im = document.createElement('img'); im.className = 'pimg'; im.src = it.url; im.alt = '';
       Object.assign(im.style, { left: pct(x, PAGE_W), top: pct(L.y, PAGE_H), width: pct(L.dw, PAGE_W), height: pct(L.dh, PAGE_H) });
@@ -166,6 +169,7 @@
   ['dragenter', 'dragover'].forEach(t => el.dz.addEventListener(t, e => { e.preventDefault(); el.dz.classList.add('drag'); }));
   ['dragleave', 'drop'].forEach(t => el.dz.addEventListener(t, e => { e.preventDefault(); el.dz.classList.remove('drag'); }));
   el.dz.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
+
   ['dragover', 'drop'].forEach(t => window.addEventListener(t, e => e.preventDefault()));
   document.addEventListener('paste', e => {
     const files = [...(e.clipboardData?.items || [])].filter(i => i.kind === 'file' && i.type.startsWith('image/')).map(i => i.getAsFile()).filter(Boolean);
