@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Waybill PDF Formatter</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <h1>Waybill PDF Formatter</h1>
+  <p>Upload, arrange, and convert your waybills into print-ready PDFs.</p>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload images">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <p class="dz-title">Drag &amp; drop JPG images here</p>
+      <button type="button" class="btn primary" id="browseBtn">Browse files</button>
+      <p class="hint">or press <kbd>Ctrl</kbd> + <kbd>V</kbd> to paste a screenshot</p>
+      <input id="fileInput" type="file" accept=".jpg,.jpeg,image/jpeg" multiple hidden>
+    </div>
+    <div id="error" class="msg error" role="alert" hidden></div>
+  </section>
+
+  <section class="card">
+    <div class="row between">
+      <h2>Images <span id="count" class="badge">0</span></h2>
+      <button class="btn ghost" id="clearBtn" disabled>Clear All</button>
+    </div>
+    <p class="hint" id="listHint">No images yet. Drag the thumbnails to change page order.</p>
+    <ul id="list" class="list"></ul>
+  </section>
+
+  <section class="card">
+    <h2>PDF settings</h2>
+    <div class="settings">
+      <div><span>Paper</span><strong>A4 Landscape (297 × 210 mm)</strong></div>
+      <div><span>Margins</span><strong>10 mm on all sides</strong></div>
+      <div><span>Layout</span><strong>Two identical copies per page</strong></div>
+      <div><span>Duplicate images</span><strong>Enabled</strong></div>
+    </div>
+    <label class="check"><input type="checkbox" id="showGuide" checked> Show center fold guide in preview</label>
+    <label class="check"><input type="checkbox" id="printGuide"> Include center fold line in the final PDF</label>
+  </section>
+
+  <section class="card">
+    <h2>Preview</h2>
+    <div class="paper-wrap">
+      <div id="paper" class="paper"><div class="empty">Add an image to see the preview</div></div>
+    </div>
+    <div class="row center nav">
+      <button class="btn" id="prevBtn" aria-label="Previous page" disabled>&larr; Prev</button>
+      <span id="pageInfo">Page 0 of 0</span>
+      <button class="btn" id="nextBtn" aria-label="Next page" disabled>Next &rarr;</button>
+    </div>
+    <p class="hint center">Dashed blue line = 10 mm margin. Print the PDF at 100% / Actual Size.</p>
+  </section>
+
+  <section class="card actions">
+    <button class="btn primary big" id="generateBtn" disabled>Generate PDF</button>
+    <button class="btn success big" id="downloadBtn" hidden>Download PDF</button>
+    <div id="status" class="msg ok" role="status" hidden></div>
+  </section>
+</main>
+
+<footer class="footer">Everything runs in your browser. Your images are never uploaded.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
